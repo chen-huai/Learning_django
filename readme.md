@@ -3,7 +3,7 @@
 * django-admin startproject project名称
     * 目录结构
 ### 新建app
-* python manage.py startapp app名称
+* python manage.py startapp app名称（pycharm可以运行manage即可）
   * 目录结构
 * settings.py 中找到INSTALLED_APPS这一项，添加新建的app，如下：
 ```
@@ -14,6 +14,7 @@
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'web.apps.WebConfig'
     'app名称',               
     )
 ```
