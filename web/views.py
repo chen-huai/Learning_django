@@ -1,8 +1,10 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from web.models import Department, UserInfo
 from django.http import JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.clickjacking import xframe_options_exempt
+
 # Create your views here.
 def index(request):
     return HttpResponse('欢迎来到学习乐园')
@@ -11,6 +13,7 @@ def index(request):
 def depart_list(request):
     if request.method == 'GET':
         return render(request, 'depart_list.html')
+
     data_list = Department.objects.all()
     data_list = serializers.serialize("json", data_list)
     # data_list = [
@@ -29,6 +32,7 @@ def depart_list(request):
     print(res)
     return JsonResponse(res, safe=False)
 def depart_list_data(request):
+    print(request.method)
     data_list = Department.objects.all().values()
     count = len(data_list)
     data_list = list(data_list)
@@ -47,6 +51,15 @@ def depart_list_data(request):
         'data': data_list
     }
     return JsonResponse(res, safe=False)
+
+@xframe_options_exempt
+def depart_add(request):
+    if request.method == 'GET':
+        return render(request, 'depart_add.html')
+    title = request.POST.get('title')
+    flag = Department.objects.create(title=title)
+    if flag:
+        return redirect('/depart/list/')
 
 def test(request):
     return render(request, 'test.html')

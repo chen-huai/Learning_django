@@ -25,22 +25,105 @@ layui.use('table', function(){
     ,url: '/depart/list/data/' //数据接口
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,page: true //开启分页
-      ,parseData: function (res) { //res 即为原始返回的数据
-        console.log(res)
-            return {
-                "code": res.code, //解析接口状态
-                "msg": res.msg, //解析提示文本
-                "count": res.total, //解析数据长度
-                "data": res.data, //解析数据列表
-            };
-        }
     ,cols: [[ //表头
       {field: 'id', title: 'ID', width:180, sort: true, fixed: 'left'}
       ,{field: 'title', title: '部门名称', width:180}
       ,{fixed: 'right', title:'操作', toolbar: '#barDemo1',align: 'center',minWidth: 120}
     ]]
-  });
 
+  });
+    //头工具栏事件
+        table.on('toolbar(departListTable)', function(obj){
+            // var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'add':
+                    openAdd();
+                    break;
+            };
+        });
+        //监听行工具事件
+        table.on('tool(departListTable)', function(obj){
+            var ID = obj.data.ID;
+            var title = obj.data.title;
+
+            switch(obj.event){
+                case 'edit':
+                    openEdit(ID);
+                    break;
+                case 'delete':
+                    openDelete(ID, title);
+                    break;
+            };
+        });
+        //方法1： 跳转新页面方式新增, type模式为2
+        function openAdd(){
+            layer.open({
+                type:2 //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                ,title:"新增人员"
+                ,content:'/depart/add'
+                ,area:['700px','560px']
+                // ,area:['380px','330px']
+                ,shade:  0.4
+                ,anim:5 //弹出动画
+                ,shadeClose: true
+                ,btn: ['保存', '关闭'] //只是为了演示
+                ,btnAlign: 'c'
+                ,closeBtn: 0
+                ,yes: function(index, layero){
+                    let body = layer.getChildFrame('body', index);
+                    let submited = body.find('button')[0];
+                    submited.click();
+                }
+                ,btn2: function(index){
+                    layer.close(index);
+                }
+            });
+        }
+        function openEdit(ID){
+            layer.open({
+                type:2 //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                ,title:"编辑人员"
+                ,content:'user_operate?ID=' + ID
+                ,area:['700px','560px']
+                ,shade:  0.4
+                ,anim:5 //弹出动画
+                ,shadeClose: true
+                ,btn: ['更新', '关闭'] //只是为了演示
+                ,btnAlign: 'c'
+                ,closeBtn: 0
+                ,yes: function(index, layero)
+                {
+                    let body = layer.getChildFrame('body', index);
+                    let submited = body.find('button')[0];
+                    submited.click();
+                }
+                ,btn2: function(index)
+                {
+                    layer.close(index);
+                }
+            });
+        }
+
+        function openDelete(ID, title){
+            layer.confirm('删除人员 [' + title + '] ?', {
+                btn: ['删除','再考虑考虑'] //按钮
+            }, function()
+            {
+                $.get('user_update', {ID: ID}, function(res)
+                {
+                    let msg = JSON.parse(res).msg;
+                    let flag = JSON.parse(res).flag;
+                    if(flag)
+                    {
+                        layui.$('.layui-laypage-btn').click();
+                        layer.msg(msg, {icon: 1});
+                    }else {
+                        layui.$('.layui-laypage-btn').click();
+                        layer.msg(msg, {icon: 2});
+                    }
+                });
+            });
+        }
 });
 </script>
 {% endblock %}
