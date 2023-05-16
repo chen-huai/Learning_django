@@ -25,5 +25,6 @@ urlpatterns = [
     path('test/', views.test),
     path('depart/list/data/', views.depart_list_data),
     path('depart/add/', views.depart_add),
+    path('depart/delete/', views.depart_delete),
 
 ]

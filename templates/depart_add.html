@@ -10,7 +10,7 @@
 <body>
 <div style="padding:20px" >
 
-    <form class="layui-form layui-form-pane" lay-filter="formData">
+    <form class="layui-form layui-form-pane" lay-filter="formData" method="post">
         {% csrf_token %}
             <div class="layui-form-item">
                 <label class="layui-form-label">部门名称</label>
@@ -19,14 +19,15 @@
                 </div>
             </div>
             <div class="layui-form-item" style="display: none">
-                <button class="layui-btn" lay-submit="" lay-filter="submit">提交</button>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit" >提交</button>
             </div>
     </form>
 </div>
 <script type="text/javascript">
-    layui.use(['form','jquery', 'laydate'], function(){
+    layui.use(['form','jquery', 'laydate','layer'], function(){
         let form = layui.form;
         let $ = layui.jquery;
+        let layer = layui.layer;
 
         // 验证成功后才会执行下面的操作
         form.on('submit(submit)',function (data) {
@@ -37,11 +38,11 @@
                 // console.log(JSON.parse(res).msg);
                 let msg = JSON.parse(res).msg;
                 let flag = JSON.parse(res).flag;
-
+                console.log(flag)
                 if(flag){
 
                     let index = parent.layer.getFrameIndex(window.name);
-
+                    console.log(index)
                     parent.layer.close(index);
 
                     parent.layui.$('.layui-laypage-btn')[0].click();

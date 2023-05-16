@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, HttpResponse, redirect
 from web.models import Department, UserInfo
 from django.http import JsonResponse
@@ -56,10 +58,32 @@ def depart_list_data(request):
 def depart_add(request):
     if request.method == 'GET':
         return render(request, 'depart_add.html')
+    msg = {}
+    msg['flag'] = 0
     title = request.POST.get('title')
-    flag = Department.objects.create(title=title)
-    if flag:
-        return redirect('/depart/list/')
+    res = Department.objects.create(title=title)
+    if res:
+        msg['flag'] = 2
+        msg['msg'] = '新增成功'
+    else:
+        msg['msg'] = '新增失败'
+    return HttpResponse(json.dumps(msg))
+    # return JsonResponse(msg, safe=False)
+
+# @xframe_options_exempt
+def depart_delete(request):
+    msg = {}
+    msg['flag'] = 0
+    get_msg = request.GET
+    id = request.GET.get('ID')
+    res = Department.objects.filter(id=id).delete()
+    print(res[0])
+    if res[0]:
+        msg['flag'] = 1
+        msg['msg'] = '删除成功'
+    else:
+        msg['msg'] = '删除失败'
+    return JsonResponse(msg, safe=False)
 
 def test(request):
     return render(request, 'test.html')

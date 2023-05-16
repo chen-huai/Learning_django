@@ -15,8 +15,10 @@
                 </script>
             </div>
 <script>
-layui.use('table', function(){
+layui.use(['table','jquery', 'layer'], function(){
   var table = layui.table;
+  let $ = layui.jquery;
+  let layer = layui.layer;
 
   //第一个实例
   table.render({
@@ -43,7 +45,7 @@ layui.use('table', function(){
         });
         //监听行工具事件
         table.on('tool(departListTable)', function(obj){
-            var ID = obj.data.ID;
+            var ID = obj.data.id;
             var title = obj.data.title;
 
             switch(obj.event){
@@ -60,8 +62,8 @@ layui.use('table', function(){
             layer.open({
                 type:2 //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                 ,title:"新增人员"
-                ,content:'/depart/add'
-                ,area:['700px','560px']
+                ,content:'/depart/add/'
+                ,area:['300px','260px']
                 // ,area:['380px','330px']
                 ,shade:  0.4
                 ,anim:5 //弹出动画
@@ -70,6 +72,7 @@ layui.use('table', function(){
                 ,btnAlign: 'c'
                 ,closeBtn: 0
                 ,yes: function(index, layero){
+                    console.log(index)
                     let body = layer.getChildFrame('body', index);
                     let submited = body.find('button')[0];
                     submited.click();
@@ -105,14 +108,16 @@ layui.use('table', function(){
         }
 
         function openDelete(ID, title){
-            layer.confirm('删除人员 [' + title + '] ?', {
+            layer.confirm('删除部门 [' + title + '] ?', {
                 btn: ['删除','再考虑考虑'] //按钮
             }, function()
             {
-                $.get('user_update', {ID: ID}, function(res)
+                $.get('/depart/delete/', { ID: ID }, function(res)
                 {
-                    let msg = JSON.parse(res).msg;
-                    let flag = JSON.parse(res).flag;
+                    {#let msg = JSON.parse(res).msg;#}
+                    {#let flag = JSON.parse(res).flag;#}
+                    let msg = res.msg;
+                    let flag = res.flag;
                     if(flag)
                     {
                         layui.$('.layui-laypage-btn').click();
