@@ -85,5 +85,17 @@ def depart_delete(request):
         msg['msg'] = '删除失败'
     return JsonResponse(msg, safe=False)
 
+def user_list(request):
+    # if request.method == 'GET':
+    #     return render(request, 'user_list.html')
+    user_list_data = UserInfo.objects.all()
+    print(user_list_data)
+    for user in user_list_data:
+        print(user.get_gender_display())
+        print(user.department.title)
+    return HttpResponse('DFASDF')
+
+
+
 def test(request):
     return render(request, 'test.html')
