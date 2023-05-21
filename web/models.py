@@ -6,6 +6,9 @@ class Department(models.Model):
     # 部门
     title = models.CharField(verbose_name='部门名称', max_length=32)
     # delete_time = models.DateTimeField(verbose_name='删除时间')
+    def __str__(self):
+        return self.title
+
 
 class UserInfo(models.Model):
     #     员工表
@@ -23,7 +26,7 @@ class UserInfo(models.Model):
     # 因与department有关联，当部门删除；
     #   1.人员表相应的也删除，级联删除，on_delete=models.CASCADE
     #   2.置空，on_delete=models.SET.NULL,null=True,blank=True
-    department = models.ForeignKey(to='Department', to_field='id', on_delete=models.CASCADE)
+    department = models.ForeignKey(verbose_name='部门', to='Department', to_field='id', on_delete=models.CASCADE)
 
 
 

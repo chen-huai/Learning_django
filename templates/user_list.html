@@ -1,9 +1,8 @@
 {% extends 'layout.html' %}
 {#{% load static %}#}
 {% block content_detail %}
-{#    <link rel="stylesheet"  href="{% static "layui/css/layui.css" %}">#}
             <div class="layui-form-item">
-                <table class="layui-hide" id="departListTable" lay-filter="departListTable" ></table>
+                <table class="layui-hide" id="userListTable" lay-filter="userListTable" ></table>
                 <script type="text/html" id="toolbarDemo">
                     <div class="layui-btn-container">
                         <button type="button" class="layui-btn layui-btn-sm" lay-event="add"> <i class="layui-icon">&#xe654; 新增</i> </button>
@@ -16,26 +15,32 @@
             </div>
 <script>
 layui.use(['table','jquery', 'layer'], function(){
-  var table = layui.table;
+  let table = layui.table;
   let $ = layui.jquery;
   let layer = layui.layer;
 
   //第一个实例
   table.render({
-    elem: '#departListTable'
+    elem: '#userListTable'
     ,height: 600
-    ,url: '/depart/list/data/' //数据接口
+    ,url: '/user/list/data/' //数据接口
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,page: true //开启分页
     ,cols: [[ //表头
       {field: 'id', title: 'ID', width:180, sort: true, fixed: 'left'}
-      ,{field: 'title', title: '部门名称', width:180}
+      ,{field: 'name', title: '姓名', width:180}
+      ,{field: 'password', title: '密码', width:180}
+      ,{field: 'create_time', title: '创建日期', width:180}
+      ,{field: 'age', title: '年龄', width:180}
+      ,{field: 'account', title: '余额', width:180}
+      ,{field: 'gender', title: '性别', width:180}
+      ,{field: 'department_id', title: '部门名称', width:180}
       ,{fixed: 'right', title:'操作', toolbar: '#barDemo1',align: 'center',minWidth: 120}
     ]]
 
   });
     //头工具栏事件
-        table.on('toolbar(departListTable)', function(obj){
+        table.on('toolbar(userListTable)', function(obj){
             // var checkStatus = table.checkStatus(obj.config.id);
             switch(obj.event){
                 case 'add':
@@ -44,16 +49,16 @@ layui.use(['table','jquery', 'layer'], function(){
             };
         });
         //监听行工具事件
-        table.on('tool(departListTable)', function(obj){
+        table.on('tool(userListTable)', function(obj){
             var ID = obj.data.id;
-            var title = obj.data.title;
+            var name = obj.data.name;
 
             switch(obj.event){
                 case 'edit':
                     openEdit(ID);
                     break;
                 case 'delete':
-                    openDelete(ID, title);
+                    openDelete(ID, name);
                     break;
             };
         });
@@ -61,10 +66,9 @@ layui.use(['table','jquery', 'layer'], function(){
         function openAdd(){
             layer.open({
                 type:2 //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-                ,title:"新增部门"
-                ,content:'/depart/add/'
-                ,area:['300px','260px']
-                // ,area:['380px','330px']
+                ,title:"新增人员"
+                ,content:'/user/add/'
+                ,area:['600px','560px']
                 ,shade:  0.4
                 ,anim:5 //弹出动画
                 ,shadeClose: true
@@ -85,7 +89,7 @@ layui.use(['table','jquery', 'layer'], function(){
         function openEdit(ID){
             layer.open({
                 type:2 //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-                ,title:"编辑部门"
+                ,title:"编辑人员"
                 ,content:'user_operate?ID=' + ID
                 ,area:['700px','560px']
                 ,shade:  0.4
@@ -107,12 +111,12 @@ layui.use(['table','jquery', 'layer'], function(){
             });
         }
 
-        function openDelete(ID, title){
-            layer.confirm('删除部门 [' + title + '] ?', {
+        function openDelete(ID, name){
+            layer.confirm('删除人员 [' + name + '] ?', {
                 btn: ['删除','再考虑考虑'] //按钮
             }, function()
             {
-                $.get('/depart/delete/', { ID: ID }, function(res)
+                $.get('/user/delete/', { ID: ID }, function(res)
                 {
                     {#let msg = JSON.parse(res).msg;#}
                     {#let flag = JSON.parse(res).flag;#}

@@ -1,23 +1,29 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>{empty name="user"}新增用户{else /}编辑用户{/empty} </title>
+    <meta charset="UTF-8">
+    <title>Title</title>
     <link rel="stylesheet"  href="{% static "layui/css/layui.css" %}">
     <script src="{% static 'layui/layui.js' %}"></script>
 </head>
 <body>
 <div style="padding:20px" >
-
+{#    {% csrf_token %}#}
+{#    {%  for each in form %}#}
+{#        {{ each.label }}: {{ each }}#}
+{#    {%   endfor %}#}
     <form class="layui-form layui-form-pane" lay-filter="formData" method="post">
         {% csrf_token %}
+        {% for each in form %}
             <div class="layui-form-item">
-                <label class="layui-form-label">部门名称</label>
+                <label class="layui-form-label">{{ each.label }}</label>
                 <div class="layui-input-block">
-                  <input type="text" name="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                    {{ each }}
                 </div>
             </div>
+        {% endfor %}
+
             <div class="layui-form-item" style="display: none">
                 <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit" >提交</button>
             </div>
@@ -34,7 +40,7 @@
             let obj = form.val("formData");
             // console.log(obj)
 
-            $.post('/depart/add/', obj, function(res){
+            $.post('/user/add/', obj, function(res){
                 // console.log(JSON.parse(res).msg);
                 let msg = JSON.parse(res).msg;
                 let flag = JSON.parse(res).flag;
@@ -63,6 +69,7 @@
         });
     });
 
-
 </script>
+
 </body>
+</html>

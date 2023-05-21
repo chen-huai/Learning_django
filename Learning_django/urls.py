@@ -23,11 +23,15 @@ urlpatterns = [
     path('depart/list/', views.depart_list),
     path('', views.index),
     path('test/', views.test),
+
+
     path('depart/list/data/', views.depart_list_data),
     path('depart/add/', views.depart_add),
     path('depart/delete/', views.depart_delete),
 
 
     path('user/list/', views.user_list),
+    path('user/list/data/', views.user_list_data),
+    path('user/add/', views.user_add),
 
 ]
