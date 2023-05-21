@@ -92,7 +92,8 @@ from django import forms
 class UserModelForm(forms.ModelForm):
     class Meta:
         model = UserInfo
-        fields = ['name', 'password', 'age', 'account', 'gender', 'department']
+        fields = '__all__'
+        # fields = ['name', 'password', 'age', 'account', 'gender', 'department']
         # widgets = {
         #     'name': forms.TextInput(attrs={'class':'layui-input'}),
         #     'password': forms.TextInput(attrs={'class':'layui-input'}),
@@ -103,18 +104,30 @@ class UserModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs = {'class': 'layui-input'}
+            field.widget.attrs = {'class': 'layui-input', 'placeholder': field.label}
 
 
 def user_list(request):
     if request.method == 'GET':
+        # if request.is_secure():
+        #     user_list_data = UserInfo.objects.all().values()
+        #     count = len(user_list_data)
+        #     data_list = list(user_list_data)
+        #
+        #     res = {
+        #         'code': 0,
+        #         'msg': '',
+        #         'count': count,
+        #         'data': data_list
+        #     }
+        #     return JsonResponse(res, safe=False)
         return render(request, 'user_list.html')
 
     # 数据库查询
     # user_list_data = UserInfo.objects.all()
     # for user in user_list_data:
     #     print(user.get_gender_display()) # 性别对应code
-    #     print(user.department.title) # 外键名称
+    #     print(user.department.title) # 外键名
     user_list_data = UserInfo.objects.all().values()
     count = len(user_list_data)
     data_list = list(user_list_data)
@@ -147,11 +160,15 @@ def user_add(request):
         return render(request, 'user_add.html', {'form': form})
     msg = {}
     msg['flag'] = 0
-    title = request.POST.get('title')
-    res = UserInfo.objects.create(title=title)
+    form = UserModelForm(data=request.POST)
+    # 校验
+    res = form.is_valid()
     if res:
+        form.save()
         msg['flag'] = 2
         msg['msg'] = '新增成功'
+
     else:
-        msg['msg'] = '新增失败'
+        msg['msg'] = '新增失败:'
     return HttpResponse(json.dumps(msg))
+    # return render(request, 'user_add.html', {'form': form})

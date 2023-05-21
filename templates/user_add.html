@@ -9,10 +9,6 @@
 </head>
 <body>
 <div style="padding:20px" >
-{#    {% csrf_token %}#}
-{#    {%  for each in form %}#}
-{#        {{ each.label }}: {{ each }}#}
-{#    {%   endfor %}#}
     <form class="layui-form layui-form-pane" lay-filter="formData" method="post">
         {% csrf_token %}
         {% for each in form %}
@@ -20,6 +16,7 @@
                 <label class="layui-form-label">{{ each.label }}</label>
                 <div class="layui-input-block">
                     {{ each }}
+                    {{ each.errors }}
                 </div>
             </div>
         {% endfor %}
@@ -38,7 +35,7 @@
         // 验证成功后才会执行下面的操作
         form.on('submit(submit)',function (data) {
             let obj = form.val("formData");
-            // console.log(obj)
+            console.log(obj)
 
             $.post('/user/add/', obj, function(res){
                 // console.log(JSON.parse(res).msg);
