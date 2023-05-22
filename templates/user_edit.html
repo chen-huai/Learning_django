@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>更新用户</title>
     <link rel="stylesheet"  href="{% static "layui/css/layui.css" %}">
     <script src="{% static 'layui/layui.js' %}"></script>
 </head>
@@ -37,7 +37,7 @@
             let obj = form.val("formData");
             console.log(obj)
 
-            $.post('/user/add/', obj, function(res){
+            $.post('', obj, function(res){
                 // console.log(JSON.parse(res).msg);
                 let msg = JSON.parse(res).msg;
                 let flag = JSON.parse(res).flag;

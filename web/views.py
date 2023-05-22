@@ -164,11 +164,45 @@ def user_add(request):
     # 校验
     res = form.is_valid()
     if res:
+        # 添加界面没有的数据
+        # form.instance.create_time = ''
         form.save()
         msg['flag'] = 2
         msg['msg'] = '新增成功'
 
     else:
-        msg['msg'] = '新增失败:'
+        msg['msg'] = '新增失败'
     return HttpResponse(json.dumps(msg))
     # return render(request, 'user_add.html', {'form': form})
+
+@xframe_options_exempt
+def user_edit(request, id):
+    row_data = UserInfo.objects.filter(id=id).first()
+    if request.method == 'GET':
+        form = UserModelForm(instance=row_data)
+        return render(request, 'user_edit.html', {'form': form})
+    msg = {}
+    msg['flag'] = 0
+    form = UserModelForm(data=request.POST, instance=row_data)
+    # 校验
+    res = form.is_valid()
+    if res:
+        form.save()
+        msg['flag'] = 2
+        msg['msg'] = '更新成功'
+
+    else:
+        msg['msg'] = '更新失败'
+    return HttpResponse(json.dumps(msg))
+
+def user_delete(request, id):
+    msg = {}
+    msg['flag'] = 0
+    res = UserInfo.objects.filter(id=id).delete()
+    if res[0]:
+        msg['flag'] = 1
+        msg['msg'] = '删除成功'
+    else:
+        msg['msg'] = '删除失败'
+    return JsonResponse(msg, safe=False)
+

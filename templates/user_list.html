@@ -88,11 +88,13 @@ layui.use(['table','jquery', 'layer'], function(){
             });
         }
         function openEdit(ID){
+            {#let urlRes = 'user_edit/' + ID + '/'#}
+            {#console.log(urlRes)#}
             layer.open({
                 type:2 //0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
                 ,title:"编辑人员"
-                ,content:'user_operate?ID=' + ID
-                ,area:['700px','560px']
+                ,content: '/user/edit/' + ID + '/'
+                ,area:['600px','560px']
                 ,shade:  0.4
                 ,anim:5 //弹出动画
                 ,shadeClose: true
@@ -117,7 +119,7 @@ layui.use(['table','jquery', 'layer'], function(){
                 btn: ['删除','再考虑考虑'] //按钮
             }, function()
             {
-                $.get('/user/delete/', { ID: ID }, function(res)
+                $.get('/user/delete/'+ID,  function(res)
                 {
                     {#let msg = JSON.parse(res).msg;#}
                     {#let flag = JSON.parse(res).flag;#}
