@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.clickjacking import xframe_options_exempt, xframe_options_deny
-
+from django.core.exceptions import ValidationError
 # Create your views here.
 def index(request):
     return HttpResponse('欢迎来到学习乐园')
@@ -90,6 +90,12 @@ def test(request):
 from django import forms
 
 class UserModelForm(forms.ModelForm):
+    # 校验方式1
+    # name = forms.CharField(
+    #     label='名称',validators=['正则表达式']
+    # )
+
+
     class Meta:
         model = UserInfo
         fields = '__all__'
@@ -104,7 +110,15 @@ class UserModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
+            # 添加样式
             field.widget.attrs = {'class': 'layui-input', 'placeholder': field.label}
+    # # 校验方式2:钩子方法
+    # def clean_name(self):
+    #     txt_name = self.cleaned_data['name']
+    #     if len(txt_name) != 'ceshi':
+    #         raise ValidationError('格式错误')
+    #     else:
+    #         return txt_name
 
 
 def user_list(request):
