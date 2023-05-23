@@ -90,6 +90,9 @@ def test(request):
 from django import forms
 
 class UserModelForm(forms.ModelForm):
+    # 在编辑和新增中，modelform最好不一样，因为需要校验的内容不一样，如：新增判断电话不一样，编辑时无需判断（或者需排除自身那条数据）
+
+
     # 校验方式1
     # name = forms.CharField(
     #     label='名称',validators=['正则表达式']
@@ -112,13 +115,18 @@ class UserModelForm(forms.ModelForm):
         for field in self.fields.values():
             # 添加样式
             field.widget.attrs = {'class': 'layui-input', 'placeholder': field.label}
-    # # 校验方式2:钩子方法
-    # def clean_name(self):
-    #     txt_name = self.cleaned_data['name']
-    #     if len(txt_name) != 'ceshi':
-    #         raise ValidationError('格式错误')
-    #     else:
-    #         return txt_name
+    # 校验方式2:钩子方法
+    def clean_name(self):
+        txt_name = self.cleaned_data['name']
+        # # 判断是否存在
+        # res = UserInfo.objects.filter(name=txt_name).exists()
+        # # 编辑时需排除自身数据
+        # row_id=self.instance.pk
+        # UserInfo.objects.filter(name=txt_name).exclude(id=1)
+        if len(txt_name) != 'ceshi':
+            raise ValidationError('格式错误')
+        else:
+            return txt_name
 
 
 def user_list(request):
