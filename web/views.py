@@ -163,7 +163,17 @@ def user_list(request):
     return JsonResponse(res, safe=False)
 
 def user_list_data(request):
-    user_list_data = UserInfo.objects.all().values()
+    get_data = request.GET
+    print(get_data)
+    search_data = {}
+    if ('name' in get_data) and (get_data['name'] != '' or get_data['age'] != '' or get_data['gender'] != ''):
+        # search_data['name'] = 'test'
+        search_data['name'] = get_data['name']
+        search_data['age'] = get_data['age']
+        search_data['gender'] = get_data['gender']
+        user_list_data = UserInfo.objects.filter(**search_data).values()
+    else:
+        user_list_data = UserInfo.objects.all().values()
     count = len(user_list_data)
     data_list = list(user_list_data)
 

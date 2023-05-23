@@ -1,20 +1,60 @@
 {% extends 'layout.html' %}
 {#{% load static %}#}
 {% block content_detail %}
-            <div class="layui-form-item">
-                <table class="layui-hide" id="userListTable" lay-filter="userListTable" ></table>
-                <script type="text/html" id="toolbarDemo">
-                    <div class="layui-btn-container">
-                        <button type="button" class="layui-btn layui-btn-sm" lay-event="add"> <i class="layui-icon">&#xe654; 新增</i> </button>
+    <div class="layui-card-body">
+                    <div class="layui-row">
+                        <form class="layui-form layui-form-pane" lay-filter="formData">
+                            <div class="layui-form-item">
+                                <div class="layui-inline layui-col-xs3">
+                                    <label class="layui-form-label">姓名</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="name" id="name"  class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-inline layui-col-xs3">
+                                    <label class="layui-form-label">年龄</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="age" id="age"  class="layui-input">
+                                    </div>
+
+                                </div>
+                                <div class="layui-inline layui-col-xs3">
+                                    <label class="layui-form-label">性别</label>
+                                    <div class="layui-input-inline">
+                                        <select name="gender" id="gender"  class="layui-input" lay-search>
+                                            <option value=""></option>
+                                            <option value=1>男</option>
+                                            <option value=2>女</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="layui-inline layui-col-xs3">
+                                    <div class="layui-inline layui-col-xs3">
+                                        <button class="layui-btn" lay-submit lay-filter="search" id='search'><i class="layui-icon">&#xe615;</i>搜索</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <table class="layui-hide" id="userListTable" lay-filter="userListTable" ></table>
+                                <script type="text/html" id="toolbarDemo">
+                                    <div class="layui-btn-container">
+                                        <button type="button" class="layui-btn layui-btn-sm" lay-event="add"> <i class="layui-icon">&#xe654; 新增</i> </button>
+                                    </div>
+                                </script>
+                                <script type="text/html" id="barDemo1">
+                                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+                                </script>
+                            </div>
+                        </form>
                     </div>
-                </script>
-                <script type="text/html" id="barDemo1">
-                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-                </script>
-            </div>
+                </div>
+            
 <script>
-layui.use(['table','jquery', 'layer'], function(){
+layui.use(['form', 'table','jquery', 'layer'], function(){
+  let form = layui.form;
   let table = layui.table;
   let $ = layui.jquery;
   let layer = layui.layer;
@@ -25,6 +65,7 @@ layui.use(['table','jquery', 'layer'], function(){
     ,height: 600
     {#,url: '/user/list/' //数据接口#}
     ,url: '/user/list/data/' //数据接口
+
     ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
     ,page: true //开启分页
     ,cols: [[ //表头
@@ -38,8 +79,37 @@ layui.use(['table','jquery', 'layer'], function(){
       ,{field: 'department_id', title: '部门名称', width:180}
       ,{fixed: 'right', title:'操作', toolbar: '#barDemo1',align: 'center',minWidth: 120}
     ]]
-
+      ,id: 'userListTable'
+      ,done:function(res,curr,count){
+                // 当前页为最后一页时， 清空这一页的数据需要手动跳转到前一页
+                if(curr>1 && res.data.length == 0){
+                    var pageValue = curr - 1;
+                    table.reload('userListTable',{
+                        page:{curr:pageValue},// 修改页码
+                    });
+                };
+            }
   });
+  //表格重载
+        $('#search').on('click', function(){
+            {#console.log(11);#}
+            // var demoReload = $('#searchID');
+            var searchData = form.val("formData");
+            {#console.log(searchData);#}
+            //执行重载
+            table.reload('userListTable', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: {
+                    name:searchData.name,
+                    age:searchData.age,
+                    gender:searchData.gender,
+                }
+            }, 'data');
+            return false;
+        });
+        
     //头工具栏事件
         table.on('toolbar(userListTable)', function(obj){
             // var checkStatus = table.checkStatus(obj.config.id);
