@@ -7,6 +7,9 @@ from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.clickjacking import xframe_options_exempt, xframe_options_deny
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
+
+
 # Create your views here.
 def index(request):
     return HttpResponse('欢迎来到学习乐园')
@@ -145,6 +148,9 @@ def user_list(request):
         #     return JsonResponse(res, safe=False)
         return render(request, 'user_list.html')
 
+    # Django可以后台传前端代码，并显示html效果
+    #导入mark_safe，并用该库处理数据即可
+
     # 数据库查询
     # user_list_data = UserInfo.objects.all()
     # for user in user_list_data:
@@ -164,10 +170,16 @@ def user_list(request):
 
 def user_list_data(request):
     get_data = request.GET
+    # 页码
+    page = int(get_data['page'])
+    limit = int(get_data['limit'])
+    start = (page-1)*limit
+    end = page*limit
+    # 搜索条件
     search_data = {}
     if ('name' in get_data) and (get_data['name'] != '' or get_data['age'] != '' or get_data['gender'] != ''):
         # search_data['name'] = 'test'
-        if get_data['name__contains'] != '':
+        if get_data['name'] != '':
             search_data['name'] = get_data['name']
         if get_data['age'] != '':
             search_data['age'] = get_data['age']
@@ -177,7 +189,8 @@ def user_list_data(request):
     else:
         user_list_data = UserInfo.objects.all().values()
     count = len(user_list_data)
-    data_list = list(user_list_data)
+    # 必须转化为列表才可以显示
+    data_list = list(user_list_data)[start:end]
 
     res = {
         'code': 0,
