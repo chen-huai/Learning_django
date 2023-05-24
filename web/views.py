@@ -115,18 +115,18 @@ class UserModelForm(forms.ModelForm):
         for field in self.fields.values():
             # 添加样式
             field.widget.attrs = {'class': 'layui-input', 'placeholder': field.label}
-    # 校验方式2:钩子方法
-    def clean_name(self):
-        txt_name = self.cleaned_data['name']
-        # # 判断是否存在
-        # res = UserInfo.objects.filter(name=txt_name).exists()
-        # # 编辑时需排除自身数据
-        # row_id=self.instance.pk
-        # UserInfo.objects.filter(name=txt_name).exclude(id=1)
-        if len(txt_name) != 'ceshi':
-            raise ValidationError('格式错误')
-        else:
-            return txt_name
+    # # 校验方式2:钩子方法
+    # def clean_name(self):
+    #     txt_name = self.cleaned_data['name']
+    #     # # 判断是否存在
+    #     # res = UserInfo.objects.filter(name=txt_name).exists()
+    #     # # 编辑时需排除自身数据
+    #     # row_id=self.instance.pk
+    #     # UserInfo.objects.filter(name=txt_name).exclude(id=1)
+    #     if len(txt_name) != 'ceshi':
+    #         raise ValidationError('格式错误')
+    #     else:
+    #         return txt_name
 
 
 def user_list(request):
@@ -164,13 +164,15 @@ def user_list(request):
 
 def user_list_data(request):
     get_data = request.GET
-    print(get_data)
     search_data = {}
     if ('name' in get_data) and (get_data['name'] != '' or get_data['age'] != '' or get_data['gender'] != ''):
         # search_data['name'] = 'test'
-        search_data['name'] = get_data['name']
-        search_data['age'] = get_data['age']
-        search_data['gender'] = get_data['gender']
+        if get_data['name__contains'] != '':
+            search_data['name'] = get_data['name']
+        if get_data['age'] != '':
+            search_data['age'] = get_data['age']
+        if get_data['gender'] != '':
+            search_data['gender'] = get_data['gender']
         user_list_data = UserInfo.objects.filter(**search_data).values()
     else:
         user_list_data = UserInfo.objects.all().values()
