@@ -142,7 +142,7 @@ class UserModelForm(forms.ModelForm):
 
     def clean_confirm_password(self):
         pwd = self.cleaned_data.get('password')
-        confirm = md5(self.cleaned_data('confirm_password'))
+        confirm = md5(self.cleaned_data.get('confirm_password'))
         if pwd != confirm:
             raise ValidationError('密码不一致')
         # password返回return值
