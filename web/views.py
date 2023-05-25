@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.clickjacking import xframe_options_exempt, xframe_options_deny
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
-
+from web.encrypt import md5
 
 # Create your views here.
 def index(request):
@@ -100,12 +100,18 @@ class UserModelForm(forms.ModelForm):
     # name = forms.CharField(
     #     label='名称',validators=['正则表达式']
     # )
-
+    confirm_password = forms.CharField(
+        label='确认密码',
+        widget=forms.PasswordInput(render_value=True)
+    )
 
     class Meta:
         model = UserInfo
-        fields = '__all__'
-        # fields = ['name', 'password', 'age', 'account', 'gender', 'department']
+        # fields = '__all__'
+        fields = ['name', 'password', 'confirm_password', 'age', 'account', 'gender', 'department', 'create_time']
+        widgets = {
+            'password': forms.PasswordInput(render_value=True)
+        }
         # widgets = {
         #     'name': forms.TextInput(attrs={'class':'layui-input'}),
         #     'password': forms.TextInput(attrs={'class':'layui-input'}),
@@ -130,7 +136,17 @@ class UserModelForm(forms.ModelForm):
     #         raise ValidationError('格式错误')
     #     else:
     #         return txt_name
+    def clean_password(self):
+        pwd = self.cleaned_data.get('password')
+        return md5(pwd)
 
+    def clean_confirm_password(self):
+        pwd = self.cleaned_data.get('password')
+        confirm = md5(self.cleaned_data('confirm_password'))
+        if pwd != confirm:
+            raise ValidationError('密码不一致')
+        # password返回return值
+        return confirm
 
 def user_list(request):
     if request.method == 'GET':
@@ -169,6 +185,8 @@ def user_list(request):
     return JsonResponse(res, safe=False)
 
 def user_list_data(request):
+    # for i in range(50):
+    #     UserInfo.objects.create(name='test%s'%i, password=i*10, age=i+3, account=i*10, create_time='2012-3-5', gender=1, department_id=1)
     get_data = request.GET
     # 页码
     page = int(get_data['page'])
@@ -180,7 +198,7 @@ def user_list_data(request):
     if ('name' in get_data) and (get_data['name'] != '' or get_data['age'] != '' or get_data['gender'] != ''):
         # search_data['name'] = 'test'
         if get_data['name'] != '':
-            search_data['name'] = get_data['name']
+            search_data['name__contains'] = get_data['name']
         if get_data['age'] != '':
             search_data['age'] = get_data['age']
         if get_data['gender'] != '':
