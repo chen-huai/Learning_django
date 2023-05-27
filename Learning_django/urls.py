@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from web import views
 
+from web import login
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('depart/list/', views.depart_list),
@@ -36,4 +38,6 @@ urlpatterns = [
     path('user/edit/<int:id>/', views.user_edit),
     path('user/delete/<int:id>/', views.user_delete),
 
+
+    path('login/', login.login)
 ]
