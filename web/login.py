@@ -35,5 +35,12 @@ def login(requeset):
             'name': user.name,
             'password': user.password
         }
+        print(requeset.session['msg']['name'])
         return redirect('/depart/list/')
     return render(requeset, 'login.html', {'form': form})
+
+def logout(request):
+
+    request.session.clear()
+    # del request.session['msg']
+    return redirect('/login/')

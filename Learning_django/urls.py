@@ -39,5 +39,6 @@ urlpatterns = [
     path('user/delete/<int:id>/', views.user_delete),
 
 
-    path('login/', login.login)
+    path('login/', login.login),
+    path('logout/', login.logout),
 ]

@@ -16,6 +16,9 @@ def index(request):
 
 # @csrf_exempt
 def depart_list(request):
+    # msg = request.session.get('msg')
+    # if not msg:
+    #     return redirect('/login/')
     if request.method == 'GET':
         return render(request, 'depart_list.html')
 
