@@ -41,4 +41,5 @@ urlpatterns = [
 
     path('login/', login.login),
     path('logout/', login.logout),
+    path('picture/code/', login.picture_code),
 ]
