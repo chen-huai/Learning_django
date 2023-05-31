@@ -65,3 +65,12 @@
 * 
 * 创建超级用户
 `python manage.py createsuperuser`
+* ORM操作
+* ModelForm 和 Form组件，在我们开发增删改查功能
+  * 生成HTML标签
+    * 外键关联，如果直接使用queryset的是可以直接获取到外建关联的对应的表的名称等信息
+  * 请求数据进行校验
+  * 保存到数据库
+  * 获取错误信息
+* Cookie和Session，用户登录信息保存
+* 中间件，基于中间件实现用户认证

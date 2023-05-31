@@ -55,7 +55,7 @@ def get_picture():
     chr_4 = ''.join(random.sample(chr_all, 4))
     image = ImageCaptcha().generate_image(chr_4)
     print(image)
-    image.save('./%s.jpg' % chr_4)
+    # image.save('./%s.jpg' % chr_4)
     return image, chr_4
 # res = get_picture()
 # print(res)

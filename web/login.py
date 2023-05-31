@@ -66,5 +66,6 @@ def picture_code(requeset):
     requeset.session.set_expiry(60)
     # 内存中的文件
     file = BytesIO()
+    # 保存内存中
     img.save(file, 'png')
     return HttpResponse(file.getvalue())
