@@ -19,6 +19,7 @@ from django.urls import path
 from web import views
 
 from web import login
+from web import chart
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,4 +43,10 @@ urlpatterns = [
     path('login/', login.login),
     path('logout/', login.logout),
     path('picture/code/', login.picture_code),
+
+
+    path('chart/list/', chart.chart_list),
+    path('chart/bar/', chart.chart_bar),
+
+
 ]
