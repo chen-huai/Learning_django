@@ -19,7 +19,7 @@ from django.urls import path
 from web import views
 
 from web import login
-from web import chart
+from web import chart, upload
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,26 +27,29 @@ urlpatterns = [
     path('', views.index),
     path('test/', views.test),
 
-
+    # 部门
     path('depart/list/data/', views.depart_list_data),
     path('depart/add/', views.depart_add),
     path('depart/delete/', views.depart_delete),
 
-
+    # 用户
     path('user/list/', views.user_list),
     path('user/list/data/', views.user_list_data),
     path('user/add/', views.user_add),
     path('user/edit/<int:id>/', views.user_edit),
     path('user/delete/<int:id>/', views.user_delete),
 
-
+    # 登录
     path('login/', login.login),
     path('logout/', login.logout),
     path('picture/code/', login.picture_code),
 
-
+    # 图表
     path('chart/list/', chart.chart_list),
     path('chart/bar/', chart.chart_bar),
+
+    # 上传文件
+    path('upload/list/', upload.upload_list),
 
 
 ]
