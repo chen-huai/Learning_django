@@ -1,0 +1,22 @@
+
+{% extends 'layout.html' %}
+{% block content_detail %}
+<form class="layui-form layui-form-pane" lay-filter="formData" method="post">
+        {% csrf_token %}
+        {% for each in form %}
+            <div class="layui-form-item">
+                <label class="layui-form-label">{{ each.label }}</label>
+                <div class="layui-input-block">
+                    {{ each }}
+{#                    <span>{{ each.errors.0 }}</span>#}
+                </div>
+            </div>
+        {% endfor %}
+
+            <div class="layui-form-item" style="display: none">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit" >提交</button>
+            </div>
+<input type="submit" value="提交">
+</form>
+
+{% endblock %}
