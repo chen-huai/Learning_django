@@ -77,6 +77,8 @@
   * 请求数据进行校验
   * 保存到数据库
     * form.instance.字段名称 = 'XXX'(可在后台自动生成的字段数据)
+    * modelform上传文件是自动，不过需要配置media文件夹
+    * form上传，需要重新操作文件
   * 获取错误信息
 * Cookie和Session，用户登录信息保存
   * Cookie是服务端给客户端的秘钥
