@@ -34,12 +34,13 @@ def upload_form(request):
         print('dd')
         return render(request, 'upload_form.html', {'form': form})
 
-    form = UpForm(request.POST, request.FILES)
-    # form = UpForm(data=request.POST, files=request.FILES)
+    # form = UpForm(request.POST, request.FILES)
+    form = UpForm(data=request.POST, files=request.FILES)
+    print(request.FILES)
     if form.is_valid():
         img = form.cleaned_data.get('img')
         # 上传图片是上传文件路径,需要将路径由static开始
-        file_path = os.path.join('web.static.img', 'static', 'img', img.name)
+        file_path = os.path.join('media',  img.name)
         f = open(file_path, mode='wb')
         for chunk in img.chunks():
             f.write(chunk)

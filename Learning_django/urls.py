@@ -21,11 +21,18 @@ from web import views
 from web import login
 from web import chart, upload
 
+from django.urls import path,re_path
+from django.views.static import serve
+from Learning_django import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('depart/list/', views.depart_list),
     path('', views.index),
     path('test/', views.test),
+
+    #
+    re_path(r'media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
 
     # 部门
     path('depart/list/data/', views.depart_list_data),

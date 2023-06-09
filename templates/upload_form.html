@@ -1,7 +1,7 @@
 
 {% extends 'layout.html' %}
 {% block content_detail %}
-<form class="layui-form layui-form-pane" lay-filter="formData" method="post">
+<form class="layui-form layui-form-pane" lay-filter="formData" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% for each in form %}
             <div class="layui-form-item">
@@ -13,10 +13,10 @@
             </div>
         {% endfor %}
 
-            <div class="layui-form-item" style="display: none">
+            <div class="layui-form-item" >
                 <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit" >提交</button>
             </div>
-<input type="submit" value="提交">
+{#<input type="submit" value="提交">#}
 </form>
 
 {% endblock %}
