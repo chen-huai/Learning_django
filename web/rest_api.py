@@ -9,6 +9,7 @@ class MyAuthentication(object):
     def authenticate(self, request):
         token = request._request.GET.get('token')
         if not token:
+            # 使用postman会提示用户认证失败
             raise exceptions.AuthenticationFailed('用户认证失败')
 
     def authenticate_header(self, val):
@@ -17,7 +18,7 @@ class MyAuthentication(object):
 
 class RestView(APIView):
     # 用户认证
-    authentication_classes = [MyAuthentication, ]
+    authentication_classes = [MyAuthentication]
 
     def get(self, request, *args, **kwargs):
         return HttpResponse('获取')

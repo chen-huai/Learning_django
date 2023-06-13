@@ -84,6 +84,7 @@
   * Cookie是服务端给客户端的秘钥
   * Session是用户信息
 * 中间件，基于中间件实现用户认证
+  * 最多五个方法
 
 
 ### restful规范
@@ -101,3 +102,13 @@
 * hypermedia api--自动在返回数据添加URL信息
 
 ### Django rest framework框架
+* 验证---dispatch
+* 源码流程
+  * 面向对象
+    * 分装
+    * 继承
+    * 多态
+* 认证
+* 权限
+* 节流
+* 版本
