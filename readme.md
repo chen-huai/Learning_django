@@ -85,3 +85,19 @@
   * Session是用户信息
 * 中间件，基于中间件实现用户认证
 
+
+### restful规范
+* API与用户通信协议，大部分使用HTTPS协议
+* URL规范
+  * 域名www.xxx.com/api
+  * 版本www.xxx.com/api/v1
+* 路径使用名词
+* method--CBV
+* 过滤--筛选条件
+* 状态码--提示
+  * 200,300,403,500等等
+* 错误处理
+* 返回结果
+* hypermedia api--自动在返回数据添加URL信息
+
+### Django rest framework框架

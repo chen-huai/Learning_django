@@ -16,15 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from web import views
-
-from web import login
-from web import chart, upload
-
 from django.urls import path,re_path
 from django.views.static import serve
 from Learning_django import settings
 
+from web import views, login, chart, upload, rest_api
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('depart/list/', views.depart_list),
@@ -59,5 +55,7 @@ urlpatterns = [
     path('upload/list/', upload.upload_list),
     path('upload/form/', upload.upload_form),
 
+    #  rest framework
+    path('rest/test/', rest_api.RestView.as_view()),
 
 ]

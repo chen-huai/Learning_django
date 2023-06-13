@@ -27,7 +27,7 @@ class AuthMiddleware(MiddlewareMixin):
 
         if request.path_info in ['/login/', '/picture/code/']:
             return
-        msg = request.session.get('msg')
+        msg = request.session.get('msg', )
         if msg:
             return
         else:
