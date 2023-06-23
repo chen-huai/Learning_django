@@ -1,5 +1,5 @@
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
-import random, string
+# from PIL import Image, ImageDraw, ImageFont, ImageFilter
+# import random, string
 
 # 学习
 # img = Image.new(mode='RGB', size=(120, 30), color=(255, 255, 255))

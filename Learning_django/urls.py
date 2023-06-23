@@ -57,5 +57,6 @@ urlpatterns = [
 
     #  rest framework
     path('rest/test/', rest_api.RestView.as_view()),
-
+    path('api/v1/auth/', rest_api.AuthView.as_view()),
+    path('api/v1/depart/', rest_api.DepartView.as_view()),
 ]
