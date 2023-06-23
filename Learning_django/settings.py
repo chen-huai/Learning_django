@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'web.apps.WebConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'web.middleware.auth.M1',
     'web.middleware.auth.M2',
-    'web.middleware.auth.AuthMiddleware'
+    # 'web.middleware.auth.AuthMiddleware'
 ]
 
 ROOT_URLCONF = 'Learning_django.urls'
@@ -141,3 +142,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 客户端上传文件存储位置
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+REST_FRAMEWORK = {
+    # 'DEFAULT_AUTHENTICATION_CLASSES': ['路径.文件名.类名', ''],
+    'DEFAULT_AUTHENTICATION_CLASSES': ['web.middleware.auth.AuthTest', ],
+    'UNAUTHENTICATED_USER': None,
+    'UNAUTHENTICATED_TOKEN': None,
+}

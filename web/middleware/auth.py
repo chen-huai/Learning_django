@@ -1,6 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.shortcuts import HttpResponse, redirect
-
+from rest_framework.authentication import BaseAuthentication
 
 # 使用中间件需要在setting设置,按顺序执行
 class M1(MiddlewareMixin):
@@ -44,3 +44,10 @@ class AuthMiddleware(MiddlewareMixin):
 
     def process_response(self, request, response):
         return response
+class AuthTest(BaseAuthentication):
+    def authenticate(self, request):
+        """
+        Authenticate the request and return a two-tuple of (user, token).
+        """
+        return None
+        raise NotImplementedError(".authenticate() must be overridden.")

@@ -113,9 +113,28 @@
     * 多态
 * 认证
   * 有自带认证规则
-  * 类中写
+  * 类中写静态字段
     `authentication_classes=[Authtication]`
   * ![img_2.png](img_2.png)
+  * 全局设置
+  ```
+    # 在setting中设置
+    REST_FRAMEWORK = {
+      'DEFAULT_AUTHENTICATION_CLASSES':['路径.文件名.类名',''],
+    'UNAUTHENTICATED_USER':None,
+    'UNAUTHENTICATED_TOKEN':None,
+  }
+    # 如不用认证，重新赋值为空
+    authentication_classes=['']
+  ```
+  * drf内置认证BaseAuthentication
+    * 源码流程 
+      * dispatch
+        * -封装requea 
+          * -获取定义的认证类（全局/局部），通过列表生成时创建对象. 
+        * -initial 
+          * perform authentication 
+            * request.user(内部循环)
 * 权限
 * 节流
 * 版本
