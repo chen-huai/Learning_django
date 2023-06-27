@@ -116,6 +116,12 @@
   * 类中写静态字段
     `authentication_classes=[Authtication]`
   * ![img_2.png](img_2.png)
+  * 返回值
+    * None 不管
+    * 异常 抛出异常
+    * 元组 两个元素
+      * request.user
+      * request.Auth
   * 全局设置
   ```
     # 在setting中设置
@@ -130,11 +136,24 @@
   * drf内置认证BaseAuthentication
     * 源码流程 
       * dispatch
-        * -封装requea 
+        * -封装request  
           * -获取定义的认证类（全局/局部），通过列表生成时创建对象. 
         * -initial 
           * perform authentication 
             * request.user(内部循环)
 * 权限
+  * 类中写静态字段
+  * `permission_classes = [Mypermission]`
+  * 返回值
+    * True 有权限
+    * False 无权限
+  * 全局引用
+  ```
+  REST_FRAMEWORK = {
+      # 全局使用权限类
+      "DEFAULT_PERMISSION_CLASSES": ['api.utils.permission.MyPermission'],
+  }
+  ```
+  * 源码流程
 * 节流
 * 版本

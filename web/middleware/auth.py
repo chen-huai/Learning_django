@@ -1,7 +1,7 @@
 from django.utils.deprecation import MiddlewareMixin
 from django.shortcuts import HttpResponse, redirect
 from rest_framework.authentication import BaseAuthentication
-
+from rest_framework.permissions import BasePermission
 # 使用中间件需要在setting设置,按顺序执行
 class M1(MiddlewareMixin):
     """中间件"""
@@ -44,10 +44,22 @@ class AuthMiddleware(MiddlewareMixin):
 
     def process_response(self, request, response):
         return response
+
+
 class AuthTest(BaseAuthentication):
+    # 自定义认证
     def authenticate(self, request):
         """
         Authenticate the request and return a two-tuple of (user, token).
         """
         return None
         raise NotImplementedError(".authenticate() must be overridden.")
+
+class Mypermission(BasePermission):
+    # 自定义权限管理
+    # 在类全局属性中添加该权限管理，permission_classes = [Mypermission]
+    def has_permission(self, request, view):
+        # 当权限类型为3时，无权访问
+        if request.user.user_type == 3:
+            return False
+        return True

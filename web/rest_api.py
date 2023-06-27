@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework import exceptions
+from rest_framework.permissions import BasePermission
 from web import models
 
 
@@ -62,14 +63,18 @@ class AuthView(APIView):
             ret['msg'] = '请求异常'
         return JsonResponse(ret)
 
+
 class Authtication(object):
     # 用于用户认证
-    def authenticate(self,request):
+    def authenticate(self, request):
         token = request._request.GET.get('token')
         # 后续就是判断session中token与用户是否一致
+
+
 class DepartView(APIView):
     # 用于部门增删改查
     authentication_classes = [Authtication]
+
     def get(self, request, *args, **kwargs):
         ret = {'code': 1000, 'msg': None}
         id = request.GET.get('id')
@@ -87,3 +92,13 @@ class DepartView(APIView):
             return JsonResponse(ret)
         except Exception as e:
             return JsonResponse(ret)
+
+
+class Mypermission(BasePermission):
+    # 权限管理
+    # 在类全局属性中添加该权限管理，permission_classes = [Mypermission]
+    def has_permission(self, request, view):
+        # 当权限类型为3时，无权访问
+        if request.user.user_type == 3:
+            return False
+        return True
