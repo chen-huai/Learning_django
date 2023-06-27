@@ -4,7 +4,9 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework import exceptions
 from rest_framework.permissions import BasePermission
+from rest_framework.throttling import BaseThrottle
 from web import models
+import time
 
 
 def md5(user):
@@ -102,3 +104,29 @@ class Mypermission(BasePermission):
         if request.user.user_type == 3:
             return False
         return True
+
+
+VISIT_RECORD = {}
+
+
+class VisitThrottle(BaseThrottle):
+    # 访问次数
+    # return True#return False表示防问频率太高
+    def allow_request(self, request, view):
+        # 1.获取用户TP
+        remote_addr = request.META.get('REMOTE_ADDR')
+        ctime = time.time()
+        if remote_addr not in VISIT_RECORD:
+            VISIT_RECORD[remote_addr] = [ctime]
+            return True
+        history = VISIT_RECORD.get(remote_addr)
+        while history and history[-1] < ctime:
+            history.pop()
+        if len(history) < 3:
+            history.insert(0, ctime)
+            return True
+        return False
+
+    def wait(self):
+
+        return 10

@@ -156,4 +156,9 @@
   ```
   * 源码流程
 * 节流
+  * 类中写静态字段
+    `throttle_classes = [VisitThrottle,]`
+  * 返回值
+    * True 为到限制次数
+    * False 已到限制次数
 * 版本
