@@ -127,8 +127,8 @@
     # 在setting中设置
     REST_FRAMEWORK = {
       'DEFAULT_AUTHENTICATION_CLASSES':['路径.文件名.类名',''],
-    'UNAUTHENTICATED_USER':None,
-    'UNAUTHENTICATED_TOKEN':None,
+      'UNAUTHENTICATED_USER':None,
+      'UNAUTHENTICATED_TOKEN':None,
   }
     # 如不用认证，重新赋值为空
     authentication_classes=['']

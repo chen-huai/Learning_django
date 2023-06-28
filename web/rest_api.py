@@ -105,13 +105,16 @@ class Mypermission(BasePermission):
             return False
         return True
 
-
+# 访问频率，现在放在这，一般放缓存
 VISIT_RECORD = {}
 
 
 class VisitThrottle(BaseThrottle):
     # 访问次数
     # return True#return False表示防问频率太高
+    def __init__(self):
+        self.history = None
+
     def allow_request(self, request, view):
         # 1.获取用户TP
         remote_addr = request.META.get('REMOTE_ADDR')
@@ -120,6 +123,7 @@ class VisitThrottle(BaseThrottle):
             VISIT_RECORD[remote_addr] = [ctime]
             return True
         history = VISIT_RECORD.get(remote_addr)
+        self.history = history
         while history and history[-1] < ctime:
             history.pop()
         if len(history) < 3:
@@ -128,5 +132,6 @@ class VisitThrottle(BaseThrottle):
         return False
 
     def wait(self):
-
-        return 10
+        ctime = time.time()
+        frist_time = self.history[-1]
+        return 60 - (ctime - frist_time)

@@ -147,4 +147,10 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_TOKEN': None,
     # 全局使用权限类
     "DEFAULT_PERMISSION_CLASSES": ['web.middleware.auth.MyPermission'],
+    # 全局限流
+    "DEFAULT_THROTTLE_CLASSES": ['api.utils.throttle.Visitthrottle'],
+    "DEFAULT THROTTLE_RATES": {
+        "Luffy": '3/m',
+        "LuffyUser": '10/m',
+    }
 }
