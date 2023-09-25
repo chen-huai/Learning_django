@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.urls import path,re_path
+from django.urls import path, re_path
 from django.views.static import serve
 from Learning_django import settings
 
 from web import views, login, chart, upload, rest_api
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('depart/list/', views.depart_list),
@@ -28,7 +29,7 @@ urlpatterns = [
     path('test/', views.test),
 
     #
-    re_path(r'media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
+    re_path(r'media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     # 部门
     path('depart/list/data/', views.depart_list_data),
@@ -59,4 +60,9 @@ urlpatterns = [
     path('rest/test/', rest_api.RestView.as_view()),
     path('api/v1/auth/', rest_api.AuthView.as_view()),
     path('api/v1/depart/', rest_api.DepartView.as_view()),
+    path('rest/test1/', rest_api.Test1.as_view()),
+    path('rest/test2/', rest_api.Test2.as_view()),
+
+    # 版本控制
+    # path(r'(?P<version>[v1|v2]+)/users/$', views.Usersview.as_view()),
 ]

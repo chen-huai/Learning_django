@@ -162,7 +162,22 @@
     * True 为到限制次数
     * False 已到限制次数
 * 版本
-* 解析器
+  * 可以通过URL的get传参
+  * URLPathVersioning
+  * 使用
+    * 设置
+    * 路由
+    * 视图
+      * 获取版本
+      * 获取处理版本对象
+      * 反向生成URL
+* 解析器--对请求体的数据进行解析
+  * 前戏：django:request.PosT/request.body
+    * 请求头要求
+      * Content-Type:application/x-www-form-urlencoded,request.Post中才有值(去request.body中解析数据)；
+    * 数据格式要求：
+      * name=alex&age=18&gender=男
+    * 满足以上两个要求post有值，不满足body有值
 * 序列化
   * 请求数据进行校验
   * Queryset进行序列化

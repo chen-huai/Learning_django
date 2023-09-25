@@ -145,12 +145,21 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ['web.middleware.auth.AuthTest', ],
     'UNAUTHENTICATED_USER': None,
     'UNAUTHENTICATED_TOKEN': None,
-    # 全局使用权限类
-    "DEFAULT_PERMISSION_CLASSES": ['web.middleware.auth.MyPermission'],
-    # 全局限流
-    "DEFAULT_THROTTLE_CLASSES": ['api.utils.throttle.Visitthrottle'],
-    "DEFAULT THROTTLE_RATES": {
-        "Luffy": '3/m',
-        "LuffyUser": '10/m',
-    }
+    # # 全局使用权限类
+    # "DEFAULT_PERMISSION_CLASSES": ['web.middleware.auth.MyPermission'],
+    # # 全局限流
+    # "DEFAULT_THROTTLE_CLASSES": ['api.utils.throttle.Visitthrottle'],
+    # "DEFAULT THROTTLE_RATES": {
+    #     "Luffy": '3/m',
+    #     "LuffyUser": '10/m',
+    # }
+
+    # 版本
+    "DEFAULT_VERSION_CLASS": 'rest_framework.versioning.URLPathVersioning',
+    "DEFAULT_VERSION": 'V1',
+    "ALLOWED_VERSION": ['V1', 'V2'],
+    "VERSION_PARAM": 'V1',
+    # 解析器
+    "DEFAULT_PARSER_CLASSER": ['rest_framework.parsers.JSONParser', 'rest_framework.parsersFormParser'],
+
 }

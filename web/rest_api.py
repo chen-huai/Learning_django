@@ -135,3 +135,24 @@ class VisitThrottle(BaseThrottle):
         ctime = time.time()
         frist_time = self.history[-1]
         return 60 - (ctime - frist_time)
+
+#解析器
+class Test1(APIView):
+
+    def post(self, request, *args, **kwargs):
+        # postman
+        print(type(request._request))
+        return HttpResponse('post和body')
+
+#解析器
+from rest_framework.parsers import JSONParser,FormParser
+
+class Test2(APIView):
+    # parser_classes = [JSONParser,FormParser]
+
+    def post(self, request, *args, **kwargs):
+        # postman
+        print(request.data)
+        return HttpResponse('post和body')
+
+
